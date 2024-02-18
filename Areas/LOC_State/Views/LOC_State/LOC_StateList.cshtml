@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "State List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using System.Data;
+@model DataTable;
+@using Validation_UI.Areas.LOC_State.Models
+@{
+    LOC_StateFilterModel FilterModel = new LOC_StateFilterModel();
+
+}
+
+<main id="main" class="main">
+
+    @if (TempData["Msg"] != null)
+    {
+        <div id="Feature-alert" class="alert alert-success color-success">
+            <i class="bi bi-check-circle"></i> @TempData["Msg"]
+        </div>
+
+        <script>
+            setTimeout(function () {
+                $('#Feature-alert').fadeOut('fast');
+            }, 2000); // 2 seconds
+        </script>
+    }
+
+<h1><u><b>State List</b></u></h1>
+<br />
+
+<a class="btn btn-success" asp-action="LOC_StateAdd" asp-controller="LOC_State">Add State</a>
+<br />
+<br />
+<div class="container-fluid border border-dark p-4">
+    <form class="row">
+        <div>
+            <h2>Filter</h2>
+        </div>
+        <div class="col-4">
+            <select class="form-control" asp-for="@FilterModel.CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))">
+                <option value="">Select Country</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <input type="text" class="form-control" asp-for="@FilterModel.StateName" placeholder="StateName" />
+        </div>
+        <div class="col-4">
+            <input type="text" class="form-control" asp-for="@FilterModel.StateCode" placeholder="StateCode" />
+        </div>
+        <div class="col my-2">
+            <button class="btn btn-success" type="submit" asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateFilter">Search</button>
+           
+            <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+        </div>
+    </form>
+    @*<form>
+        <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+    </form>*@
+</div>
+<br />
+
+    <table class="table table-responsive table-sm border-dark">
+    <thead>
+        <tr>
+            @*<th>State ID</th>*@
+            <th>State Name</th>
+            <th>Country Name</th>
+            <th>State Code</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow dataRow in Model.Rows)
+        {
+            <tr>
+                @*<td>@dataRow["StateID"]</td>*@
+                <td>@dataRow["StateName"]</td>
+                <td>@dataRow["CountryName"]</td>
+                <td>@dataRow["StateCode"]</td>
+                <td>@Convert.ToDateTime(dataRow["Created"]).ToString("dd-MM-yyyy")</td>
+                <td>@Convert.ToDateTime(dataRow["Modified"]).ToString("dd-MM-yyyy")</td>
+                <td>
+                    <form method="post" asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateAdd">
+                        <input type="hidden" value="@Convert.ToInt32(dataRow["StateID"])" name="StateID">
+                        <button type="submit" class="btn btn-info" value="Edit">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateDelete">
+                        <input type="hidden" value="@Convert.ToInt32(dataRow["StateID"])" name="StateID">
+                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+</main>

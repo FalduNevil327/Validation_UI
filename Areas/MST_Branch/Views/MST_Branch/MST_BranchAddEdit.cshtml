@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Branch Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model Validation_UI.Areas.LOC_Branch.Models.MST_BranchModel
+
+<main id="main" class="main">
+    <h1><u><b>Add New Branch</b></u></h1>
+    <br />
+
+    <form method="post" asp-area="MST_Branch" asp-controller="MST_Branch" asp-action="MST_BranchSave">
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div class="form-group">
+            <label>Branch Name</label>
+            <input type="text" value="@Model.BranchName" asp-for="BranchName" class="form-control" placeholder="Enter Branch Name " />
+            <span asp-validation-for="BranchName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Branch Code</label>
+            <input type="text" value="@Model.BranchCode" asp-for="BranchCode" class="form-control" placeholder="Enter Branch Code" />
+            <span asp-validation-for="BranchCode" class="text-danger"></span>
+        </div>
+        <br />
+        <div>
+            <input type="hidden" name="BranchID" value="@Model.BranchID" />
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-danger" asp-area="MST_Branch" asp-controller="MST_Branch" asp-action="MST_BranchList">Back</a>
+        </div>
+
+    </form>
+</main>

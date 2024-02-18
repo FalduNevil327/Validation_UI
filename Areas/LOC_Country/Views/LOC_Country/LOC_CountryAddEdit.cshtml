@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Country Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model Validation_UI.Areas.LOC_Country.Models.LOC_CountryModel
+
+<main id="main" class="main">
+    <h1><u><b>Add New Country</b></u></h1>
+    <br />
+
+    <form method="post" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountrySave">
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div class="form-group">
+            <label>Country Name</label>
+            <input type="text" value="@Model.CountryName" asp-for="CountryName" class="form-control" placeholder="Enter Country Name " />
+            <span asp-validation-for="CountryName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Country Code</label>
+            <input type="text" value="@Model.CountryCode" asp-for="CountryCode" class="form-control" placeholder="Enter Country Code" />
+            <span asp-validation-for="CountryCode" class="text-danger"></span>
+        </div>
+        <br />
+        <div>
+            <input type="hidden" name="CountryID" value="@Model.CountryID" />
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-danger" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryList">Back</a>
+        </div>
+
+    </form>
+</main>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#sample_1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#sample_2 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

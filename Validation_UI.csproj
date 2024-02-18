@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EnterpriseLibrary.Data" Version="6.0.1304" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\My_ContactPage\Data\" />
+    <Folder Include="Areas\My_ContactPage\Models\" />
+    <Folder Include="Areas\My_Profile\Data\" />
+    <Folder Include="Areas\My_Profile\Models\" />
+    <Folder Include="Areas\SEC_User\Data\" />
+  </ItemGroup>
+
+</Project>

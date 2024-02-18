@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "City Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Validation_UI.Areas.LOC_City.Models.LOC_CityModel
+
+<main id="main" class="main">
+    <h1><u><b>Add New City</b></u></h1>
+    <br />
+
+    <form>
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div class="form-group">
+
+            <label>City Name</label>
+            <input type="text" value="@Model.CityName" asp-for="CityName" class="form-control" placeholder="Enter City Name " />
+            <span asp-validation-for="CityName" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>City Code</label>
+            <input type="text" value="@Model.CityCode" asp-for="CityCode" class="form-control" placeholder="Enter City Code" />
+            <span asp-validation-for="CityCode" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group dropdown">
+            <label>Country Name</label>
+            <select class ="form-control"  asp-for="CountryID"  asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))"  onchange="fnOnStateChange();">
+                <option value ="">
+                    Select Country</option>
+                    </select>
+        </div>
+        <br />
+        <div class="form-group dropdown">
+            <label>State Name</label>
+            <select class="form-control" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                <option value="@Model.StateID">Select State</option>
+            </select>
+        </div>
+        <br />
+        <div>
+            <input type="hidden" name="CityID" value="@Model.CityID" />
+            <button type="submit" class="btn btn-primary" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CitySave">Save</button>
+            <a class="btn btn-danger" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityList">Back</a>
+        </div>
+
+    </form>
+</main>
+
+@section Scripts {
+    <script>
+        function fnOnStateChange() {
+            console.log("h");
+            var CountryID = $("#CountryID").val();
+            if (CountryID !== "") {
+                $("#StateID").empty();
+                $("#StateID").append($("<option></option>").val("").html("Select State"));
+                $.ajax(
+                    {
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "@Url.Action("StateDropDownByCountryID", "LOC_City")" + "?&CountryID=" + CountryID,
+                        data: {},
+                        dataType: "json",
+                        success: function (Result) {
+                            $.each(Result,
+                                function (key, value) {
+                                    $("#StateID").append($("<option></option>").val(value.stateID).html(value.stateName));
+                                });
+                        },
+                        error: function (r) {
+                            alert("Error while loading combobox.");
+                        }
+                    });
+            } else {
+                $("#StateID").empty();
+                $("#StateID").append($("<option></option>").val("").html("Select State"));
+            }
+        }
+    </script>
+
+}

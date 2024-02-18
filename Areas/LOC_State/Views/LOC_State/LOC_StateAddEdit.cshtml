@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "State Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model Validation_UI.Areas.LOC_State.Models.LOC_StateModel
+
+<main id="main" class="main">
+    <h1><u><b>Add New State</b></u></h1>
+    <br />
+
+    <form method="post" asp-asp-controller="LOC_State" asp-action="LOC_StateSave">
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div class="form-group">
+            <label>State Name</label>
+            <input type="text" asp-for="StateName" class="form-control" placeholder="Enter State Name " />
+            <span asp-validation-for="StateName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>State Code</label>
+            <input type="text" asp-for="StateCode" class="form-control" placeholder="Enter State Code" />
+            <span asp-validation-for="StateCode" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group dropdown">
+            <label>Select Country</label>
+            <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))">
+                <option value="">Select Country</option>
+            </select>
+        </div>
+        <br />
+        <div>
+            <input type="hidden" name="StateID" value="@Model.StateID" />
+            <button type="submit" class="btn btn-primary" asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateSave">Save</button>
+            <a class="btn btn-danger" asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateList">Back</a>
+
+        </div>
+
+    </form>
+</main>
+
+

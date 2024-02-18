@@ -1,0 +1,135 @@
+﻿@using System.Data;
+@model DataTable;
+@using Validation_UI.Areas.MST_Student.Models
+@{
+    MST_StudentFilterModel FilterModel = new MST_StudentFilterModel();
+    ViewData["Title"] = "Student List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<main id="main" class="main">
+
+    @if (TempData["Msg"] != null)
+    {
+        <div id="Feature-alert" class="alert alert-success color-success">
+            <i class="bi bi-check-circle"></i> @TempData["Msg"]
+        </div>
+
+        <script>
+            setTimeout(function () {
+                $('#Feature-alert').fadeOut('fast');
+            }, 2000); // 2 seconds
+        </script>
+    }
+
+<h1><u><b>Student List</b></u></h1>
+<br />
+
+<a class="btn btn-success" asp-action="MST_StudentAdd" asp-controller="MST_Student">Add Student</a>
+<br />
+<br />
+<div class="container-fluid border border-dark p-4">
+    <form class="row">
+        <div>
+            <h2>Filter</h2>
+        </div>
+        <div class="col-4">
+            <select class="form-control" asp-for="@FilterModel.CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                <option value="">Select City</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <select class="form-control" asp-for="@FilterModel.BranchID" asp-items="@(new SelectList(ViewBag.BranchList,"BranchID","BranchName"))">
+                <option value="">Select Branch</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <input type="text" class="form-control" asp-for="@FilterModel.StudentName" placeholder="StudentName" />
+        </div>
+        <div class="col my-2">
+            <button class="btn btn-success" type="submit" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentFilter">Search</button>
+          
+            <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+        </div>
+    </form>
+    @*<form>
+        <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+    </form>*@
+</div>
+<br />
+@*<table class="table table-responsive table-sm">*@
+    <table class="table table-responsive table-sm border-dark">
+    <thead>
+        <tr>
+            @*<th scope="col">Student ID</th>*@
+            <th scope="col">Student Name</th>
+            <th scope="col">Student Mobile Number</th>
+            <th scope="col">Student Email</th>
+            <th scope="col">Student Father Mobile Number</th>
+            <th scope="col">Student Address</th>
+            <th scope="col">Student BirthDate</th>
+            <th scope="col">Student Age</th>
+            <th scope="col">IsActive</th>
+            <th scope="col">Student Gender</th>
+            <th scope="col">Student Password</th>
+            <th scope="col">Branch ID</th>
+            <th scope="col">Branch Name</th>
+            <th scope="col">Branch Code</th>
+            <th scope="col">City ID</th>
+            <th scope="col">City Name</th>
+            <th scope="col">City Code</th>
+            <th scope="col">Created</th>
+            <th scope="col">Modified</th>
+           @* <th scope="col">Country ID</th>
+            <th scope="col">Country Name</th>
+            <th scope="col">Country Code</th>*@
+            <th scope="col" colspan="2">Action</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow dataRow in Model.Rows)
+        {
+            <tr>
+                @*<td>@dataRow["StudentID"]</td>*@
+                <td>@dataRow["StudentName"]</td>
+                <td>@dataRow["MobileNoStudent"]</td>
+                <td>@dataRow["Email"]</td>
+                <td>@dataRow["MobileNoFather"]</td>
+                <td>@dataRow["Address"]</td>
+                <td>@Convert.ToDateTime(dataRow["BirthDate"]).ToString("dd-MM-yyyy")</td>
+                <td>@dataRow["Age"]</td>
+                <td>@dataRow["IsActive"]</td>
+                <td>@dataRow["Gender"]</td>
+                <td>@dataRow["Password"]</td>
+                <td>@dataRow["BranchID"]</td>
+                <td>@dataRow["BranchName"]</td>
+                <td>@dataRow["BranchCode"]</td>
+                <td>@dataRow["CityID"]</td>
+                <td>@dataRow["CityName"]</td>
+                <td>@dataRow["CityCode"]</td>
+                @*<td>@dataRow["CountryID"]</td>
+                <td>@dataRow["CountryName"]</td>
+                <td>@dataRow["CountryCode"]</td>*@
+                <td>@Convert.ToDateTime(dataRow["Created"]).ToString("dd-MM-yyyy")</td>
+                <td>@Convert.ToDateTime(dataRow["Modified"]).ToString("dd-MM-yyyy")</td>
+                <td>
+                    <form method="post" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentAdd">
+                        <input type="hidden" value="@Convert.ToInt32(dataRow["StudentID"])" name="StudentID">
+                        <button type="submit" class="btn btn-info" value="Edit">Edit</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form method="post" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentDelete">
+                        <input type="hidden" value="@Convert.ToInt32(dataRow["StudentID"])" name="StudentID">
+                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+</main>
